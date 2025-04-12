@@ -1,0 +1,49 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <% if @feed %>
+      <%= link_to "← Back to Feed", feed_path(@feed), class: "text-blue-600 hover:text-blue-800" %>
+      <h1 class="text-3xl font-bold mt-4">Entries from <%= @feed.name %></h1>
+    <% else %>
+      <%= link_to "← Back to Feeds", feeds_path, class: "text-blue-600 hover:text-blue-800" %>
+      <h1 class="text-3xl font-bold mt-4">All Entries</h1>
+    <% end %>
+  </div>
+
+  <% if @entries.any? %>
+    <div class="space-y-6">
+      <% @entries.each do |entry| %>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2">
+            <%= link_to entry.title, entry_path(entry), class: "text-blue-600 hover:text-blue-800" %>
+          </h3>
+          <div class="text-sm text-gray-500 mb-2">
+            <% if !@feed %>
+              <%= link_to entry.feed.name, feed_path(entry.feed), class: "font-medium text-gray-700" %> • 
+            <% end %>
+            Published: <%= entry.published_at.strftime("%B %d, %Y at %I:%M %p") %>
+            <% if entry.author.present? %>
+              by <%= entry.author %>
+            <% end %>
+          </div>
+          <div class="prose max-w-none text-gray-700">
+            <%= truncate(strip_tags(entry.content), length: 250) %>
+          </div>
+          <div class="mt-4">
+            <%= link_to "Read more", entry_path(entry), class: "text-blue-600 hover:text-blue-800" %>
+            <% if entry.url.present? %>
+              | <%= link_to "View original", entry.url, target: "_blank", rel: "noopener", class: "text-blue-600 hover:text-blue-800" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="mt-8">
+      <%= paginate @entries %>
+    </div>
+  <% else %>
+    <div class="bg-gray-100 p-8 rounded-lg text-center">
+      <p class="text-gray-500">No entries found.</p>
+    </div>
+  <% end %>
+</div>
