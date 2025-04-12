@@ -1,4 +1,4 @@
-# RSS Feed Manager with Madmin
+# PixelPimp RSS Feed Manager
 
 A simple Rails application to manage RSS feeds using the Madmin admin interface gem.
 
